@@ -1,0 +1,39 @@
+﻿
+********************************************************************************************************************* 1 /
+
+ilk adım olarak katmanlı mimarinin katmanları oluşturuldu.
+Blog.Web - Blog.Core - Blog.Data - Blog.Service - Blog.Entity
+
+
+********************************************************************************************************************* 2 /
+
+entity katmanında Entities klasorü oluşturuldu  içerisine Article, Category, Image Sınıfları eklendi.
+
+ardından core katmanında Entities klasorü oluşturuldu içerisine EntityBase sınıfı eklendi bu klasor abstract olarak işaretlendi.
+
+ardından IentityBase interface'i oluşturuldu ve EntityBase sınıfı bu interface'i implement etti.
+
+Core katmanındaki EntityBase sınıfı 
+
+        public virtual Guid Id { get; set; } = Guid.NewGuid();
+        public virtual string CreatedBy { get; set; }
+        public virtual string? ModifiedBy { get; set; }
+        public virtual string? DeletedBy { get; set; }
+        public virtual DateTime CreatedDate { get; set; } = DateTime.Now;
+        public virtual DateTime? ModifiedDate { get; set; }
+        public virtual DateTime? DeletedDate { get; set; }
+        public virtual bool IsDeleted { get; set; } = false;
+
+        bu özellikleri içeriyor.
+
+        ve Entity Katmanındaki Article, Category, Image sınıfları EntityBase ve IEntityBase sınıfını miras alıyor.
+
+
+
+********************************************************************************************************************* 3 /
+
+
+
+
+
+********************************************************************************************************************* 4 /

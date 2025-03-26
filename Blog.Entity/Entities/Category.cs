@@ -2,7 +2,7 @@
 
 namespace Blog.Entity.Entities
 {
-    public class Category : EntityBase, IEntityBase
+    public class Category : EntityBase
     {
       
 

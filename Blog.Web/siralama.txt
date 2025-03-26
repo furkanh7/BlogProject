@@ -26,7 +26,7 @@ Core katmanındaki EntityBase sınıfı
 
         bu özellikleri içeriyor.
 
-        ve Entity Katmanındaki Article, Category, Image sınıfları EntityBase ve IEntityBase sınıfını miras alıyor.
+        ve Entity Katmanındaki Article, Category, Image sınıfları EntityBase sınıfını miras alıyor.
 
 
 

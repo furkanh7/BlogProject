@@ -2,7 +2,7 @@
 
 namespace Blog.Entity.Entities
 {
-    public class Image : EntityBase, IEntityBase
+    public class Image : EntityBase
     {
         
 

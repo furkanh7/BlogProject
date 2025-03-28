@@ -31,9 +31,117 @@ Core katmanındaki EntityBase sınıfı
 
 
 ********************************************************************************************************************* 3 /
+Appsetting'ten ConnectionString'i alma ve Migrations
 
+Blog.Data katmanına Context klasörünü oluşturduk ve AppDbContext sınıfını ekledik.
 
+appsettings.json dosyasına ConnectionString ekledik.
+
+program.csde builder.services.AddDbContext<AppDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+kısmı eklendi
+
+data ve web kısmına entityframeworkcore.tools ve design paketleri yüklendi.
+
+ardından ise Package Manager Console'da Default Project'i Blog.Data olarak seçtik ve Add-Migration Initial komutunu çalıştırdık.
+update-database komutu ile veritabanına yansıttık.
 
 
 
 ********************************************************************************************************************* 4 /
+veritabanındaki veri türlerini konfigüre etmek için data kısmında mapping oluşturuldu. 
+örneğin, builder.Property(x => x.Title).HasMaxLength(150) gibi
+
+ardından ArticleMap sınıfı oluşturuldu ve bu sınıf IEntityTypeConfiguration<Article> interface'ini implement etti.
+içerisine ise 
+builder.HasData(new Article
+            {
+                Id = Guid.NewGuid(),
+                Title = "Asp.Net Core Deneme Makalesi",
+                Content = "Asp.Net Core Deneme Makalesi İçeriği",
+                ViewCount = 15,
+
+                CategoryId = Guid.Parse("7174F01E-FEE2-48CD-9F7E-7008C33E2631"),
+                ImageId = Guid.Parse("445CC7DC-C06D-4027-9FAF-B0741AB40F35"),
+                CreatedBy = "Admin Test",
+                CreatedDate = DateTime.Now,
+                IsDeleted = false
+gibi veriler eklendi.
+
+CategoryMap ve ImageMap için de aynı işlemler yapıldı.
+
+en sonda ise SeedComplete Migrate edildi.
+
+
+
+
+********************************************************************************************************************* 5 /
+Repositories Klasorü oluşturuldu içerisine Abstract klasörü oluşturuldu ve IRepository interface'i eklendi.
+ardından ise Concretes klasörü oluşturuldu ve repository sınıfları eklendi.
+
+soyut ve somut kısımlar ayrıldı.
+
+Task AddAsync(T entity)	             Yeni bir nesne ekler. (Create)
+Task<List<T>> GetAllAsync(...)     	 Belli bir şarta göre tüm verileri çeker. (Read - Liste)
+Task<T> GetAsync(...)	             Belli bir şarta göre tek bir nesne getirir. (Read - Tekil Veri)
+Task<T> GetByGuidAsync(Guid id)	     ID (GUID) ile nesneyi bulur. (Read - Tekil Veri)
+Task<T> UpdateAsync(T entity)	     Verilen nesneyi günceller. (Update)
+Task DeleteAsync(T entity)	         Nesneyi siler. (Delete)
+Task<bool> AnyAsync(...)	         Veritabanında bu şartı sağlayan bir veri var mı? kontrol eder. (Exists?)
+Task<int> CountAsync(...)	         Verilen kritere uyan kaç veri var sayısını döndürür. (Count)
+
+özetle IRepository interface'i içerisinde CRUD işlemleri tanımlandı. 
+Bu kod, veri tabanı işlemlerini yönetmek için kullanılan genel bir repository arayüzüdür.
+CRUD işlemlerini asenkron olarak destekler ve her metot, bir veri tabanı operasyonunu temsil eder.
+
+Repository Kısmına gelecek olursak
+Repository<T> : Generic bir repository sınıfıdır. T bir sınıf olmalıdır ve IEntityBase arayüzünü implemente etmelidir.
+
+private DbSet<T> Table => dbContext.Set<T>(); : EF Core üzerinden ilgili tabloya erişim sağlar.
+
+CRUD işlemlerini gerçekleştiren asenkron metotlar içerir.
+---------
+
+Task<List<T>> GetAllAsync(...)	      Belirtilen kritere göre tüm verileri getirir. (Read - Liste)
+Task AddAsync(T entity)	              Yeni bir kayıt ekler. (Create)
+Task<T> GetAsync(...)	              Belirtilen kritere göre tek bir nesneyi getirir. (Read - Tekil Veri)
+Task<T> GetByGuidAsync(Guid id)	      ID (GUID) ile tek bir nesneyi getirir. (Read - Tekil Veri)
+Task<T> UpdateAsync(T entity)	      Veriyi günceller. (Update)
+Task DeleteAsync(T entity)	          Veriyi siler. (Delete)
+Task<bool> AnyAsync(...)	          Veritabanında belirtilen kritere uygun bir veri var mı kontrol eder. (Exists?)
+Task<int> CountAsync(...)	          Belirtilen kritere uyan kaç veri var, sayısını döndürür. (Count)
+
+özetleyecek olursak Bu kod, EF Core ile veri tabanı işlemlerini yöneten, asenkron çalışan, generic bir repository sınıfıdır. 
+CRUD işlemlerini merkezi bir noktadan yöneterek kod tekrarını azaltır ve yönetilebilirliği artırır.
+
+
+Enson ise Extensions klasörü oluşturuldu ve LoadDataLayerExtensions sınıfı eklendi.
+
+Bu kod, IRepository<T> arayüzünü Repository<T> sınıfı ile eşleştirerek bağımlılık enjeksiyonunu kolaylaştırır ve 
+ASP.NET Core’un DI yapısını kullanarak merkezi bir veri erişim katmanı oluşturur.
+********************************************************************************************************************* 6 /
+
+
+
+
+
+
+
+
+
+
+
+********************************************************************************************************************* 7 /
+
+
+
+
+
+
+
+
+
+
+********************************************************************************************************************* 8 /
+
+
+

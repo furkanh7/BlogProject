@@ -120,13 +120,22 @@ Bu kod, IRepository<T> arayüzünü Repository<T> sınıfı ile eşleştirerek b
 ASP.NET Core’un DI yapısını kullanarak merkezi bir veri erişim katmanı oluşturur.
 ********************************************************************************************************************* 6 /
 
+program.cs deki services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(config.GetConnectionString("DefaultConnection")));
+kısmı DataLayerExtensions classına eklendi bunun amacı program.cs dosyasını daha temiz tutmaktır.
 
+Blog.Data katmanında UnitOfWork klasörü oluşturuldu ve IUnitOfWork interface'i eklendi.
+ardından UnitOfWork sınıfı eklendi ve IUnitOfWork interface'i implement edildi.
 
+bu yapının amacı ise 
+✅ Repository katmanlarını tek bir noktadan yönetmek için kullanılır.
+✅ Farklı veritabanı işlemlerinin tek bir transaction (işlem) içinde gerçekleşmesini sağlar.
+✅ Asenkron ve senkron veri işlemlerini destekler.
+✅ Tüm repository'leri GetRepository<T>() ile çağırarak kod tekrarını azaltır.
 
+özetle
 
-
-
-
+IUnitOfWork, repository'leri yöneten ve tüm veritabanı işlemlerini tek bir merkezden kontrol eden bir yapıdır. 
+SaveAsync() ile değişiklikleri asenkron kaydederken, GetRepository<T>() ile farklı varlıklar için repository nesnesi sağlar. 
 
 
 

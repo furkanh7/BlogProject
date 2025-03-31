@@ -141,16 +141,101 @@ SaveAsync() ile değişiklikleri asenkron kaydederken, GetRepository<T>() ile fa
 
 ********************************************************************************************************************* 7 /
 
+Blog.Service katmanında Services klasörü oluşturuldu içerisine Abstractions klasörü ve Concrete klasörü eklendi.
 
+Abstractions klasörü içerisine IArticleService interface'i eklendi.
+Concrete klasörü içerisine ArticleService sınıfı eklendi ve IArticleService interface'i implement edildi.
 
+Ardından ise Extensions klasörü oluşturuldu ve ServiceLayerExtensions sınıfı eklendi.
+sonra program.cs dosyasına LoadServiceLayerExtensions() eklendi.
 
-
+sonra ise homecontroller içersindee IArticleService interface'i enjekte edildi ve kullanıldı.
+test amaçlı proje çalıştırıldı ve sorunsun veriler geldi.
 
 
 
 
 
 ********************************************************************************************************************* 8 /
+program.cs de şu değişikler yapıldı
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapAreaControllerRoute(
+    name: "Admin",
+    areaName: "Admin",
+    pattern: "Admin/{controller=Home}/{action=Index}/{id?}");
+
+    endpoints.MapDefaultControllerRoute();
+
+});
+ardından;
+
+Blog.Web katmanında Areas Adında bir klasör oluşturuldu ve içerisine Admin klasörü oluşturuldu.
+Admin klasörü içerisine Controllers klasörü oluşturuldu ve içerisine HomeController eklendi.
+aynı şekilde admin klasörü içerisine Views klasörü oluşturuldu 
+ve ardından Models klasörünü oluşturduk
+Views Klasörü içerisine Shared klasörü oluşturuldu ve içerisine _ViewStart ve _ViewImports kısmı eklendi.
+Home klasörrü ve _Layout kısımları HomeController içerisindeki Index'e Sağ tıklayarak AddView kısmı otomatik oluşturuldu.
+
+Enson RazorRuntimeCompilation paketini projeye dahil ettik bu paket sayesinde 
+projeyi yeniden çalıştırmadan yapılan değişiklikler anında yansıtılır.
+
+
+
+********************************************************************************************************************* 9 /
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+********************************************************************************************************************* 10 /
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+********************************************************************************************************************* 11 /
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+********************************************************************************************************************* 12 /
 
 
 

@@ -186,7 +186,7 @@ projeyi yeniden çalıştırmadan yapılan değişiklikler anında yansıtılır
 ********************************************************************************************************************* 9 /
 
 
-
+admin template eklendi ve Layout mantığı anlatıldı
 
 
 
@@ -200,11 +200,33 @@ projeyi yeniden çalıştırmadan yapılan değişiklikler anında yansıtılır
 
 
 ********************************************************************************************************************* 10 /
+Projeye AutoMapper Eklendi ve Kullanıldı
 
+Blog.Entity katmanına Dtos klasörü oluşturuldu ve Ardından Articles Dosyası oluşturuldu ve içerisine ArticleDto sınıfı eklendi.
 
+Blog.Service katmanına AutoMpapper klasörü oluşturuldu ve içerisine Article Klasörü oluşturuldu içerisine 
+ArticleProfile classı  eklendi.
+AutoMapper kütüphanesi, iki nesne arasında veri eşleştirmesi yapmamızı sağlar.
+Bu sayede, veritabanından gelen verileri, DTO’lara dönüştürerek,
+DTO’ları kullanarak verileri sunucuya gönderirken, sunucudan gelen verileri de DTO’lara dönüştürerek kullanabiliriz.
 
+AutoMapper kütüphanesini kullanabilmek için, AutoMapper.Extensions.Microsoft.DependencyInjection paketini projeye eklememiz gerekmektedir.
+Ardından, AutoMapper kütüphanesini projeye eklememiz gerekmektedir.
 
+Extensions klasörü içerisine  
+var assembly = Assembly.GetExecutingAssembly();
+services.AddAutoMapper(assembly);
 
+kodları eklendi. assembly değişkeni, projede bulunan tüm assembly’leri temsil eder. 
+
+ardından projenin Index.cshtml dosyasında bulunan
+@model List<Article>
+kısmını
+@model List<ArticleDto>
+
+olarak değiştirdik 
+
+ardından ArticleService.cs içerisindeki GetAllArticleAsync() metodu içerisinde gerekli değşiklikler yapıldı.
 
 
 

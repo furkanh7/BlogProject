@@ -231,31 +231,43 @@ ardından ArticleService.cs içerisindeki GetAllArticleAsync() metodu içerisind
 
 
 
-
-
-
-
-
-
-
-
-
-
 ********************************************************************************************************************* 11 /
 
+Microsoft.AspNetCore.Identity.EntityFrameworkCore paketi yüklendi ve 
+IdentityDbContext(AppDbContext sınıfında(Data Katmanı)) sınıfı eklendi.
 
+IdentityDbContext sınıfı, ASP.NET Core Identity için gerekli olan veritabanı tablolarını oluşturur.
 
+Entity Katmanında Entities klasörü içerisine AppRole,AppRoleClaim,AppUser,AppUserClaim,AppUserLogin,
+AppUserRole,AppUserToken sınıfları eklendi.
 
+AppUser sınıfı, IdentityUser sınıfından miras alır ve IEntityBase arayüzünü implement eder.
+AppRole sınıfı, IdentityRole sınıfından miras alır ve IEntityBase arayüzünü implement eder.
+AppRoleClaim sınıfı, IdentityRoleClaim sınıfından miras alır ve IEntityBase arayüzünü implement eder.
+AppUserClaim sınıfı, IdentityUserClaim sınıfından miras alır ve IEntityBase arayüzünü implement eder.
+AppUserLogin sınıfı, IdentityUserLogin sınıfından miras alır ve IEntityBase arayüzünü implement eder.
+AppUserRole sınıfı, IdentityUserRole sınıfından miras alır ve IEntityBase arayüzünü implement eder.
+AppUserToken sınıfı, IdentityUserToken sınıfından miras alır ve IEntityBase arayüzünü implement eder.
 
+AppDbContext sınıfı içerisinde gerekli özelleştirmeler yapıldı ve IdentityDbContext sınıfından miras alındı.
+(public class AppDbContext : IdentityDbContext<AppUser, AppRole, Guid, AppUserClaim, 
+AppUserRole, AppUserLogin, AppRoleClaim, AppUserToken>) gibi
 
+Mapping kısmında ise 
+UserMap sınıfı oluşturuldu ve IEntityTypeConfiguration<AppUser> interface'i implement edildi.
+RoleMap sınıfı oluşturuldu ve IEntityTypeConfiguration<AppRole> interface'i implement edildi.
+UserClaimMap sınıfı oluşturuldu ve IEntityTypeConfiguration<AppUserClaim> interface'i implement edildi.
+UserRoleMap sınıfı oluşturuldu ve IEntityTypeConfiguration<AppUserRole> interface'i implement edildi.
+UserLoginMap sınıfı oluşturuldu ve IEntityTypeConfiguration<AppUserLogin> interface'i implement edildi.
+RoleClaimMap sınıfı oluşturuldu ve IEntityTypeConfiguration<AppRoleClaim> interface'i implement edildi.
+UserTokenMap sınıfı oluşturuldu ve IEntityTypeConfiguration<AppUserToken> interface'i implement edildi.
 
+https://learn.microsoft.com/tr-tr/aspnet/core/security/authentication/customize-identity-model?view=aspnetcore-8.0
+sitesinden identity model özelleştirmeleri kopyalandı ve tüm sınıflara eklendi.
 
+user admin ve superadmin rolleri eklendi ve seed işlemi yapıldı.
 
-
-
-
-
-
+son olarak veriler migrate edilerel veritabanına yansıtıldı.
 
 ********************************************************************************************************************* 12 /
 

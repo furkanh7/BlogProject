@@ -273,3 +273,5 @@ son olarak veriler migrate edilerel veritabanına yansıtıldı.
 
 
 
+            builder.Property(l => l.ProviderKey).HasMaxLength(127);
+            builder.Property(l => l.ProviderKey).HasMaxLength(128);

@@ -16,7 +16,7 @@ namespace Blog.Data.Mappings
             // Primary key
             builder.HasKey(r => new { r.UserId, r.RoleId });
 
-            // Maps to the AspNetUserRoles table
+            // Maps to the AspNetUser Roles table
             builder.ToTable("AspNetUserRoles");
 
             builder.HasData(

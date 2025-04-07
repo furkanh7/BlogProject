@@ -13,7 +13,7 @@ namespace Blog.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<AppUserLogin> builder)
         {
-            // Composite primary key consisting of the LoginProvider and the key to use
+            // Composite primary  key consisting of the LoginProvider and the key to use
             // with that provider
             builder.HasKey(l => new { l.LoginProvider, l.ProviderKey });
 

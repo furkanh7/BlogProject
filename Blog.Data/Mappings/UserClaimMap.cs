@@ -13,7 +13,7 @@ namespace Blog.Data.Mappings
     {
         public void Configure(EntityTypeBuilder<AppUserClaim> builder)
         {
-            // Primary key
+            // Prima ry key
             builder.HasKey(uc => uc.Id);
 
             // Maps to the AspNetUserClaims table

@@ -16,7 +16,7 @@ namespace Blog.Data.Mappings
             // Composite primary key consisting of the UserId, LoginProvider and Name
             builder.HasKey(t => new { t.UserId, t.LoginProvider, t.Name });
 
-            // Limit the size of the composite key columns due to common DB restrictions
+            // Limit the size of the composite key col umns due to common DB restrictions
             builder.Property(t => t.LoginProvider);
             builder.Property(t => t.Name);
 

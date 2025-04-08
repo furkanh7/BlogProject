@@ -320,3 +320,70 @@ Mappings Klasoründe UserId ve ImageId'ler eklendi
 
 Migration'lar silindi ve yeni migration oluşturuldu bunun nedeni ise cascade için 
       
+********************************************************************************************************************* 13 /
+
+Login ve Logout kısımları yapıldı AuthController oluşturuldu 
+
+Dto Olarak UserLoginDto Oluşturuldu
+
+Login.cshtml dosyası oluşturuldu 
+
+Login.cshtml ve _Layout dosyasında asp actionları verilip gerekli değişikler verildi
+
+
+
+
+
+
+
+********************************************************************************************************************* 14 /
+
+
+
+
+
+
+
+********************************************************************************************************************* 15 /
+
+
+
+
+
+
+
+
+********************************************************************************************************************* 16 /
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

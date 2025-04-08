@@ -271,7 +271,52 @@ son olarak veriler migrate edilerel veritabanına yansıtıldı.
 
 ********************************************************************************************************************* 12 /
 
+program.cs de cookie özelleştirmeleri yapıldı bunlar ise şöyle
+
+builder.Services.AddSession();
+
+builder.Services.AddIdentity<AppUser, AppRole>(opt =>
+{
+
+    opt.Password.RequireNonAlphanumeric = false;
+    opt.Password.RequireUppercase = false;
+    opt.Password.RequireLowercase = false;
+
+})
+
+.AddRoleManager<RoleManager<AppRole>>()
+.AddEntityFrameworkStores<AppDbContext>()
+.AddDefaultTokenProviders();
+
+builder.Services.ConfigureApplicationCookie(config =>
+{
+    config.LoginPath = new PathString("/Admin/Auth/Login");
+    config.LogoutPath = new PathString("/Admin/Auth/Logout");
+    config.Cookie = new CookieBuilder
+    {
+        Name = "BlogProject",
+        HttpOnly = true,
+        SameSite = SameSiteMode.Strict,
+        SecurePolicy = CookieSecurePolicy.SameAsRequest//SecurePolicy = CookieSecurePolicy.Always olduğunda tüm istekler ile girilir http https ve diğerleri farketmez ama SameAsRequest olduğunda http ve https destekler
+
+    };
+    config.SlidingExpiration = true;
+    config.ExpireTimeSpan = TimeSpan.FromDays(7);
+    config.AccessDeniedPath = new PathString("/Admin/Auth/AccessDenied");
+});
+
+app.UseSession();
+app.UseAuthentication();
 
 
-            builder.Property(l => l.ProviderKey).HasMaxLength(127);
-            builder.Property(l => l.ProviderKey).HasMaxLength(128);
+aralarında başka kodlar var ama sadece yapılan değişikler bunlar 
+ardından ise
+
+Blog.Entity Katmanında 
+
+Article.cs, AppUser.cs, Image.cs sınıfında gerekli değişikler yapıldı 
+
+Mappings Klasoründe UserId ve ImageId'ler eklendi
+
+Migration'lar silindi ve yeni migration oluşturuldu bunun nedeni ise cascade için 
+      

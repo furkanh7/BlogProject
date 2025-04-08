@@ -62,7 +62,7 @@ namespace Blog.Data.Mappings
                 PhoneNumberConfirmed = true,
                 EmailConfirmed = true,
                 SecurityStamp = Guid.NewGuid().ToString(),
-
+                ImageId = Guid.Parse("445CC7DC-C06D-4027-9FAF-B0741AB40F35"),
 
 
             };
@@ -82,6 +82,7 @@ namespace Blog.Data.Mappings
                 PhoneNumberConfirmed = false,
                 EmailConfirmed = false,
                 SecurityStamp = Guid.NewGuid().ToString(),
+                ImageId = Guid.Parse("0098218F-EF1F-4571-A582-7205F1380C05"),
 
             };
             admin.PasswordHash = CratePasswordHash(admin, "123456");

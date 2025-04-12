@@ -340,14 +340,22 @@ Login.cshtml ve _Layout dosyasında asp actionları verilip gerekli değişikler
 
 
 
-
+admin template sidebar kısmında düzenlemeler yapıldı
 
 
 
 ********************************************************************************************************************* 15 /
 
+datatable için cdn eklendi ve js klasörü içerisine articeIndex.js oluşturuldu 
 
+Areas içerisinde Controllers klasörü içerisine ArticleControlleri oluşturuldu 
+Indexinin içerisin table yapısı eklendi ve gerekli değişiklikler yapıldı.
+ArticleDto kısmında gerekli değişiklikler yapıldı
+DTOs klasöründe Categries klasörü oluşrturuldu ve CategoryDto sınıfı eklendi.
 
+ArticleService ve IArticle Service içerisine gerekli değişiklikler yapıldı.(Metod ismi değişti(GetAllArticleAsync 
+iken ismi (GetAllArticlesWithCategoryNonDeletedAsync) olarak değişti )) bu değişiklik diğer controllerda ismi değiştirilerek
+güncellendi.
 
 
 

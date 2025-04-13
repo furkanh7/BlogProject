@@ -23,7 +23,7 @@ namespace Blog.Data.Mappings
             // Maps to the AspNetUsers table
             builder.ToTable("AspNetUsers");
 
-            // A concurrency token for use with the optimistic concurrency checking
+            // A concurrency token for use with the optimistic cconcurrency checking
             builder.Property(u => u.ConcurrencyStamp).IsConcurrencyToken();
 
             // Limit the size of columns to use efficient database types

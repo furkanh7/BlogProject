@@ -26,7 +26,7 @@ namespace Blog.Service.Services.Concrete
         {
             var categories = await unitOfWork.GetRepository<Category>().GetAllAsync(x => !x.IsDeleted);
             var map = mapper.Map<List<CategoryDto>>(categories);
-            
+
             return map;
         }
     }

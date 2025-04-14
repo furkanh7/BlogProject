@@ -377,7 +377,7 @@ CategoryService sınıfında GetAllCategoriesNonDeletedAsync() metodu oluşturul
 
 ardından ise Extension kısmına services.AddScoped<ICategoryService, CategoryService>(); eklendi
 
-add.cshtml dosyasında CategoryId kısmı için select kısmı eklendi ve gerekli değişiklikler yapıldı.
+add.cshtml dosyasında CategoryId kısmı için select kısmı eklendi ve gerekli değişiklikler yapıldı .
 
 
 ********************************************************************************************************************* 17 /

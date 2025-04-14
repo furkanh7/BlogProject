@@ -363,6 +363,34 @@ güncellendi.
 
 ********************************************************************************************************************* 16 /
 
+ArticleController'da Add kısmı oluşturuldu ve gerekli değişiklikler yapıldı.
+
+Add.cshtml dosyası oluşturuldu ve gerekli değişiklikler yapıldı.
+
+ArticleAddDto sınıfı oluşturuldu ve gerekli değişiklikler yapıldı.
+
+ArticleAddDto sınıfına Title, Content, CategoryId, ve list olarak Categories eklendi.
+
+Blog.Service katmanında ICategoryService interface'i oluşturuldu ve ICategoryService interface'i implement edildi.
+CategoryService sınıfı oluşturuldu ve gerekli değişiklikler yapıldı.
+CategoryService sınıfında GetAllCategoriesNonDeletedAsync() metodu oluşturuldu ve gerekli değişiklikler yapıldı.
+
+ardından ise Extension kısmına services.AddScoped<ICategoryService, CategoryService>(); eklendi
+
+add.cshtml dosyasında CategoryId kısmı için select kısmı eklendi ve gerekli değişiklikler yapıldı.
+
+
+********************************************************************************************************************* 17 /
+
+
+
+
+
+
+
+
+
+********************************************************************************************************************* 18 /
 
 
 
@@ -373,6 +401,7 @@ güncellendi.
 
 
 
+********************************************************************************************************************* 19 /
 
 
 
@@ -380,17 +409,7 @@ güncellendi.
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+********************************************************************************************************************* 20 /
 
 
 

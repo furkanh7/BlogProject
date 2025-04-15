@@ -19,6 +19,7 @@ namespace Blog.Data.Mappings
             // Maps to the AspNetUser Roles table
             builder.ToTable("AspNetUserRoles");
 
+
             builder.HasData(
                 new AppUserRole
                 {

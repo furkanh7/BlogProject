@@ -1,4 +1,5 @@
-﻿using Blog.Entity.DTOs.Articles;
+﻿using AutoMapper;
+using Blog.Entity.DTOs.Articles;
 using Blog.Service.Services.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,13 +10,15 @@ namespace Blog.Web.Areas.Admin.Controllers
     {
         private readonly IArticleService articleService;
         private readonly ICategoryService categoryService;
+        private readonly IMapper mapper;
 
-        public ArticleController(IArticleService articleService, ICategoryService categoryService)
+        public ArticleController(IArticleService articleService, ICategoryService categoryService, IMapper mapper)
         {
             this.articleService = articleService;
             this.categoryService = categoryService;
+            this.mapper = mapper;
         }
-        public async Task<IActionResult>Index()
+        public async Task<IActionResult> Index()
         {
             var articles = await articleService.GetAllArticlesWithCategoryNonDeletedAsync();
             return View(articles);
@@ -24,17 +27,30 @@ namespace Blog.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Add()
         {
             var categories = await categoryService.GetAllCategoriesNonDeleted();
-            return View(new ArticleAddDto { Categories = categories});
+            return View(new ArticleAddDto { Categories = categories });
         }
         [HttpPost]
         public async Task<IActionResult> Add(ArticleAddDto articleAddDto)
         {
             await articleService.CreateArticleAsync(articleAddDto);
-            RedirectToAction("Index","Article",new {Area = "Admin"});
+            RedirectToAction("Index", "Article", new { Area = "Admin" });
 
 
             var categories = await categoryService.GetAllCategoriesNonDeleted();
             return View(new ArticleAddDto { Categories = categories });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Update(Guid articleId)
+        {
+            var article = await articleService.GetArticlesWithCategoryNonDeletedAsync(articleId);
+            var categories = await categoryService.GetAllCategoriesNonDeleted();
+            
+            var articleUpdateDto = mapper.Map<ArticleUpdateDto>(article);
+            articleUpdateDto.Categories = categories;
+
+
+            return View(articleUpdateDto);
         }
     }
 }

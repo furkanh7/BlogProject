@@ -59,15 +59,9 @@ namespace Blog.Web.Areas.Admin.Controllers
            
             await articleService.UpdateArticleAsync(articleUpdateDto);
 
-
-
-
-
             var categories = await categoryService.GetAllCategoriesNonDeleted();
 
-           
             articleUpdateDto.Categories = categories;
-
 
             return View(articleUpdateDto);
 

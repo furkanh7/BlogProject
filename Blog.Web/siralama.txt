@@ -382,6 +382,23 @@ add.cshtml dosyasında CategoryId kısmı için select kısmı eklendi ve gerekl
 
 ********************************************************************************************************************* 17 /
 
+ArticleUpdateDto oluşturuldu ve gerekli değişiklikler yapıldı içerisine 
+ArticleAddDto sınıfından farklı olarak public Guid Id { get; set; } kısmı eklendi çünkü güncelleme kısmı id ye göre yapılacak.
+
+AutoMapper kısmında ise ArticleProfile.cs içerisine 
+CreateMap<ArticleUpdateDto, Article>().ReverseMap();
+CreateMap<ArticleUpdateDto, ArticleDto>().ReverseMap();
+kısımları eklendi.
+
+ArticleController içerisine Update metodu eklendi ve gerekli değişiklikler yapıldı.
+Update.cshtml dosyası oluşturuldu ve gerekli değişiklikler yapıldı.
+
+ArticleService içerisine GetArticlesWithCategoryNonDeletedAsync ve
+UpdateArticleAsync metodları eklendi ve gerekli değişiklikler yapıldı.
+
+IArticleService içerisine UpdateArticleAsync ve
+GetArticlesWithCategoryNonDeletedAsync metodu eklendi ve gerekli değişiklikler yapıldı.
+
 
 
 

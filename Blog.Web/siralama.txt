@@ -409,6 +409,12 @@ GetArticlesWithCategoryNonDeletedAsync metodu eklendi ve gerekli değişiklikler
 
 ********************************************************************************************************************* 18 /
 
+ArticleController içerisine Delete metodu eklendi ve gerekli değişiklikler yapıldı.
+
+ArticeleService içerisine DeleteArticleAsync metodu eklendi ve gerekli değişiklikler yapıldı.
+IArticleService içerisine DeleteArticleAsync metodu eklendi ve gerekli değişiklikler yapıldı.
+
+Delete metodu için bir .cshtml dosyası oluşturmadık silme işlemini article'ın index kısmında yaptık.
 
 
 

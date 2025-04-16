@@ -46,7 +46,7 @@ namespace Blog.Web.Areas.Admin.Controllers
         {
             var article = await articleService.GetArticlesWithCategoryNonDeletedAsync(articleId);
             var categories = await categoryService.GetAllCategoriesNonDeleted();
-            
+
             var articleUpdateDto = mapper.Map<ArticleUpdateDto>(article);
             articleUpdateDto.Categories = categories;
 
@@ -56,7 +56,7 @@ namespace Blog.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(ArticleUpdateDto articleUpdateDto)
         {
-           
+
             await articleService.UpdateArticleAsync(articleUpdateDto);
 
             var categories = await categoryService.GetAllCategoriesNonDeleted();
@@ -65,6 +65,13 @@ namespace Blog.Web.Areas.Admin.Controllers
 
             return View(articleUpdateDto);
 
+        }
+
+        public async Task<IActionResult> Delete(Guid articleId)
+        {
+
+            await articleService.SafeDeleteArticleAsync(articleId);
+            return RedirectToAction("Index", "Article", new { Area = "Admin" });
         }
     }
 }

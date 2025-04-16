@@ -9,6 +9,7 @@ namespace Blog.Service.Services.Abstractions
         Task CreateArticleAsync(ArticleAddDto articleAddDto);
 
         Task UpdateArticleAsync(ArticleUpdateDto articleUpdateDto);
+        Task SafeDeleteArticleAsync(Guid articleId);
 
 
 

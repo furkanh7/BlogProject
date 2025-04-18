@@ -25,16 +25,13 @@ namespace Blog.Service.Services.Concrete
         public async Task CreateArticleAsync(ArticleAddDto articleAddDto)
         {
             var userId = Guid.Parse("8CCA96CD-DB26-45F5-856C-443FFEDBF79A");
+            var imageId = Guid.Parse("445CC7DC-C06D-4027-9FAF-B0741AB40F35");
 
-            var article = new Article
-            {
-                Title = articleAddDto.Title,
-                Content = articleAddDto.Content,
-                CategoryId = articleAddDto.CategoryId,
-                UserId = userId
+            var article = new Article(articleAddDto.Title, articleAddDto.Content, userId,articleAddDto.CategoryId,imageId );
+           
 
 
-            };
+
             await unitOfWork.GetRepository<Article>().AddAsync(article);
             await unitOfWork.SaveAsync();
         }

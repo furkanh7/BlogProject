@@ -13,6 +13,7 @@
                 <div class="card mb-4">
                     <h5 class="card-header"></h5>
                     <form method="post" asp-controller="Article" asp-action="Update" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly"></div>
                         <div class="card-body">
                             <input type ="hidden" asp-for="Id" />
                             <div class="form-group">

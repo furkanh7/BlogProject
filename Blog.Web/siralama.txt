@@ -456,7 +456,98 @@ Bu, kodun okunabilirliğini artırır ve hata yapma olasılığını azaltır.
 
 
 ********************************************************************************************************************* 20 /
+Blog.Service katmanında FluentValidations Klasörü oluşturuldu ve içerisine ArticleValidator sınıfı eklendi.
+ServiceLayerExtensions içerisine 
+ services.AddControllersWithViews().AddFluentValidation(opt =>
+            {
+                opt.RegisterValidatorsFromAssemblyContaining<ArticleValidator>();
+                opt.DisableDataAnnotationsValidation = true;
+                opt.ValidatorOptions.LanguageManager.Culture = new CultureInfo("tr-TR");
+                //opt.RegisterValidatorsFromAssemblyContaining<CategoryValidator>();
+            });
+kısmı eklendi 
+ardından Extensions klasörüne FluentValidationExtensions sınıfı eklendi.
+
+Ardından ArticleController içerisine FluentValidation eklendi ve gerekli değişiklikler yapıldı.
+AddArticle ve UpdateArticle metotları için FluentValidation eklendi ve gerekli değişiklikler yapıldı.
+
+********************************************************************************************************************* 21 /
 
 
 
+
+
+
+
+
+
+
+
+
+
+********************************************************************************************************************** 22 /
+
+
+
+
+
+
+
+
+
+
+
+
+
+*********************************************************************************************************************** 23 /
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*********************************************************************************************************************** 24 /
+
+
+
+
+
+
+
+
+
+
+
+
+
+************************************************************************************************************************ 25 /
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+************************************************************************************************************************ 26 /
 

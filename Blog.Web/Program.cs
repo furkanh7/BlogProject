@@ -4,6 +4,7 @@ using Blog.Data.Extensions;
 using Blog.Service.Extensions;
 using Blog.Entity.Entities;
 using Microsoft.AspNetCore.Identity;
+using NToastNotify;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,7 +15,24 @@ builder.Services.AddSession();
 
 
 // Add services to the container.
-builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
+builder.Services.AddControllersWithViews()
+    .AddNToastNotifyToastr(new ToastrOptions
+    {
+        ProgressBar = true,
+        PositionClass = ToastPositions.TopRight,
+        PreventDuplicates = true,
+        CloseButton = true,
+        TimeOut = 3000,
+        ExtendedTimeOut = 1000,
+        ShowDuration = 1000,
+        HideDuration = 1000,
+        CloseDuration = true,
+        NewestOnTop = true
+    }
+
+
+    )
+    .AddRazorRuntimeCompilation();
 
 builder.Services.AddIdentity<AppUser, AppRole>(opt =>
 {
@@ -58,6 +76,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseNToastNotify();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

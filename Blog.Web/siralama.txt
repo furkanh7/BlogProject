@@ -473,10 +473,29 @@ AddArticle ve UpdateArticle metotları için FluentValidation eklendi ve gerekli
 
 ********************************************************************************************************************* 21 /
 
+Blog.Web Katmanında ResultMessage klasörü oluşturuldu ve içerisine Messages.cs sınıfı eklendi.
+içerisine ise 
+ public static class Article
+        {
+            public static string Add(string articleTitle)
+            {
+                return $"{articleTitle} Başlıklı Makale Başarıyla Eklendi.";
+            }
+            public static string Update(string articleTitle)
+            {
+                return $"{articleTitle} Başlıklı Makale Başarıyla Güncellenmiştir.";
+            }
+            public static string Delete(string articleTitle)
+            {
+                return $"{articleTitle} Başlıklı Makale Başarıyla Silinmiştir.";
+            }
+        }
+eklendi
 
+ardından ArticleService ve IArticleService içerisinde gerekli değişiklikler yapıldı.
 
-
-
+son olarak ise ArticleController içerisine gerekli değişiklikler yapıldı.
+ve Messages.cs sınıfı kullanıldı.
 
 
 

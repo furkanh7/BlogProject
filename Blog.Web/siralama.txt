@@ -521,6 +521,26 @@ ArticleService ve Article.cs içerisinde gerekli değişiklikler yapıldı.
 
 *********************************************************************************************************************** 23 /
 
+Blog.Service katmanında Helpers klasörü oluşturuldu ve içerisine IImageHelper ve ImageHelper sınıfları eklendi.
+
+IImageHelper interface'i, ImageHelper sınıfının uyguladığı bir arayüzdür.
+
+Bu arayüz, resim yükleme ve silme işlemleri için gerekli olan metotları tanımlar.
+IImageHelper interface'i içerisinde
+Task<ImageUploadedDto> Upload(string name, IFormFile imageFile,ImageType imageType,string folderName =null);
+void Delete(string imageName);
+kısımları eklendi.
+
+ImageHelper sınıfı ise IImageHelper interface'ini implement eder ve bu arayüzde tanımlanan metotları gerçekleştirir.
+Bu sınıf, resim yükleme ve silme işlemlerini gerçekleştirir.
+Upload metodu, bir resmi yükler ve yüklenen resmin bilgilerini döndürür.
+Delete metodu ise bir resmi siler.
+
+ImageType enum'u oluşturuldu ve içerisine User ve Post kısımları eklendi.
+Bu enum, resim türlerini belirtmek için kullanılır.
+ImageUploadedDto sınıfı oluşturuldu ve içerisine FullName kısmı eklendi.
+Bu sınıf, yüklenen resmin bilgilerini tutar.
+wwwroot klasörü içerisine images klasörü oluşturuldu.
 
 
 

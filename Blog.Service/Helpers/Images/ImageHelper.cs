@@ -81,7 +81,7 @@ namespace Blog.Service.Helpers.Images
 
         
 
-        public Task<ImageUploadedDto> Upload(string name, IFormFile imageFile,ImageType imageType, string folderName = null)
+        public async Task<ImageUploadedDto> Upload(string name, IFormFile imageFile,ImageType imageType, string folderName = null)
         {
             folderName ??= imageType == ImageType.User ? UsersImagesFolder : articleImagesFolder;
 
@@ -100,11 +100,31 @@ namespace Blog.Service.Helpers.Images
 
             var path = Path.Combine($"{wwwroot}/{imgFolder}/{folderName}", newFileName);
 
+            await using var stream = new FileStream(path,FileMode.Create, FileAccess.Write,FileShare.None, 1024 * 1024 , useAsync: false);
+            await imageFile.CopyToAsync(stream);
+
+            await stream.FlushAsync();
+
+            string message= imageType == ImageType.User 
+                ? $"{newFileName} isimli kullanýcý resmi baþarý ileyüklendi" 
+                : $"{newFileName} isimli makale resmi baþarý ile yüklendi";
+            return new ImageUploadedDto
+            {
+                FullName = $"{folderName}/{newFileName}"
+            };
         }
 
-        public Task Delete(string imageName)
+        public void Delete(string imageName)
         {
-            throw new NotImplementedException();
+            var fileToDelete = Path.Combine($"{wwwroot}/{imgFolder}/{
+                imageName}");
+            if (File.Exists(fileToDelete))
+            
+                File.Delete(fileToDelete);
+
+         
+        }
+
         }
     }
-}
+

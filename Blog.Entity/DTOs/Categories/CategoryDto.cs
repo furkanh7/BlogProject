@@ -10,6 +10,6 @@ namespace Blog.Entity.DTOs.Categories
     {
 
         public Guid Id { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } 
     }
 }

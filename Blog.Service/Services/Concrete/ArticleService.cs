@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Blog.Data.UnitOfWorks;
 using Blog.Entity.DTOs.Articles;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 
 namespace Blog.Service.Services.Concrete
 {
@@ -15,11 +16,13 @@ namespace Blog.Service.Services.Concrete
     {
         private readonly IUnitOfWork unitOfWork;
         private readonly IMapper mapper;
+        private readonly IHttpContextAccessor httpContextAccessor;
 
-        public ArticleService(IUnitOfWork unitOfWork, IMapper mapper)
+        public ArticleService(IUnitOfWork unitOfWork, IMapper mapper,IHttpContextAccessor httpContextAccessor)
         {
             this.unitOfWork = unitOfWork;
             this.mapper = mapper;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
         public async Task CreateArticleAsync(ArticleAddDto articleAddDto)

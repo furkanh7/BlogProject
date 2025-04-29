@@ -506,8 +506,9 @@ ve Messages.cs sınıfı kullanıldı.
 
 ********************************************************************************************************************** 22 /
 
-
-
+ClaimPrincipial Eklendi 
+Blog.Service katmanında Extensions klasörü içerisine LoggedInUserExtensions sınıfı eklendi.
+ArticleService ve Article.cs içerisinde gerekli değişiklikler yapıldı.
 
 
 

@@ -543,18 +543,6 @@ Bu sınıf, yüklenen resmin bilgilerini tutar.
 wwwroot klasörü içerisine images klasörü oluşturuldu.
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 *********************************************************************************************************************** 24 /
 
 

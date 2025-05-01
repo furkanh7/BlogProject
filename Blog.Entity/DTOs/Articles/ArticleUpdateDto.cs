@@ -18,7 +18,7 @@ namespace Blog.Entity.DTOs.Articles
 
         public Image Image { get; set; }
 
-        public IFormFile Photo { get; set; }
+        public IFormFile? Photo { get; set; }
 
         public IList<CategoryDto> Categories { get; set; }
     }

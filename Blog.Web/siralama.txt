@@ -545,16 +545,11 @@ wwwroot klasörü içerisine images klasörü oluşturuldu.
 
 *********************************************************************************************************************** 24 /
 
-
-
-
-
-
-
-
-
-
-
+Image Upload işlemlerine devam edildi 
+ArticleAddDto ve ArticleUpdateDto sınıflarına 
+ public IFormFile? Photo { get; set; }
+eklendi.
+ArticleService ve IArticleService içerisine gerekli değişiklikler yapıldı.
 
 
 ************************************************************************************************************************ 25 /

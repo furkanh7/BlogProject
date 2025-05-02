@@ -44,12 +44,13 @@ namespace Blog.Web.Areas.Admin.Controllers
         {
 
             var map = mapper.Map<Article>(articleAddDto);
-            toast.AddSuccessToastMessage(Messages.Article.Add(articleAddDto.Title), new ToastrOptions { Title = "Başarılı" });
+            
             var result = await validator.ValidateAsync(map);
 
             if (result.IsValid)
             {
                 await articleService.CreateArticleAsync(articleAddDto);
+                toast.AddSuccessToastMessage(Messages.Article.Add(articleAddDto.Title), new ToastrOptions { Title = "Başarılı" });
                 RedirectToAction("Index", "Article", new { Area = "Admin" });
             }
 

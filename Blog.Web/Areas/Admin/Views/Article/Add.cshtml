@@ -11,11 +11,16 @@
                 <div class="card mb-4">
                     <h5 class="card-header"></h5>
                     <form method="post" asp-controller="Article" asp-action="Add" enctype="multipart/form-data">
-                        <div
-                        asp-validation-summary="ModelOnly"    
-                        ></div>
+                        <div asp-validation-summary="ModelOnly"></div>
                         <div class="card-body">
                             <div class="form-group">
+
+                                <label asp-for="CategoryId">Kategori</label>
+
+                                <a class="btn text-primary float-end" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                                    Ekle <i class="bx bx-plus"></i>
+                                </a>
+
                                 <label asp-for="CategoryId">Kategori</label>
                                 <select id="categoryList" class="form-control" asp-for="CategoryId" asp-items="@(new SelectList(Model.Categories,"Id","Name"))"></select>
                                 <span asp-validation-for="CategoryId" class="text-danger"></span>
@@ -31,12 +36,12 @@
                                 <textarea asp-for="Content" type="text" class="form-control mb-3" id="defaultFormControlInput" placeholder="Içerik giriniz" aria-describedby="defaultFormControlHelp" style="min-height:300px;"></textarea>
                                 <span asp-validation-for="Content" class="text-danger"></span>
                             </div>
-                             <div class="form-group">
+                            <div class="form-group">
 
                                 <label asp-for="Photo" class="form-label">Resim Seçiniz</label>
                                 <input asp-for="Photo" type="file" accept="image/*" class="form-control mb-3" id="defaultFormControlInput" aria-describedby="defaultFormControlHelp">
                                 <span asp-validation-for="Photo" class="text-danger"></span>
-                            </div> 
+                            </div>
 
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary btn-block">Kaydet</button>
@@ -49,3 +54,46 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Kategori Ekleme</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+
+                        <label class="d-block form-label">Kategori İsmi</label>
+                        <input class="form-control" type="text" id="categoryName" />
+
+
+
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                <button type="button" data-keyboard="false" class="btn btn-primary" id="btnSave">Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts
+{
+    <script src="~/js/categoryAdd.js"></script>
+    <script>
+        var app = app || {};
+        app.Urls = app.Urls || {};
+
+
+        app.Urls.baseUrl ='@Url.Content("~")';
+        app.Urls.categoryAddUrl = "@Url.Action("AddWithAjax", "Category")";
+        app.Urls.articleAddUrl = "@Url.Action("Add", "Article")";
+
+
+    </script>
+};

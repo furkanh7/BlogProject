@@ -21,7 +21,7 @@ namespace Blog.Web.Areas.Admin.Controllers
         private readonly IMapper mapper;
         private readonly IToastNotification toast;
 
-        public CategoryController(ICategoryService categoryService,IValidator<Category> validator, IMapper mapper,IToastNotification toastNotification) 
+        public CategoryController(ICategoryService categoryService,IValidator<Category> validator, IMapper mapper,IToastNotification toast) 
         {
             this.categoryService = categoryService;
             this.validator = validator;
@@ -51,9 +51,46 @@ namespace Blog.Web.Areas.Admin.Controllers
                 return RedirectToAction("Index", "Category", new { Area = "Admin" });
             }
                 result.AddToModelState(this.ModelState);
-                return View(categoryAddDto);
+                return View();
            
 
         }
+        [HttpGet]
+        public async Task<IActionResult> Update(Guid categoryId)
+        {
+            var category = await categoryService.GetCategoryByGuid(categoryId);
+            var map = mapper.Map<Category,CategoryUpdateDto>(category);
+
+            return View(map);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Update(CategoryUpdateDto categoryUpdateDto)
+        {
+          
+            var map = mapper.Map<Category>(categoryUpdateDto);
+            var result = await validator.ValidateAsync(map);
+
+            if (result.IsValid)
+            {
+                var name = await categoryService.UpdateCategoryAsync(categoryUpdateDto);
+             
+                toast.AddSuccessToastMessage(Messages.Category.Update(name), new ToastrOptions { Title = "Başarılı" });
+
+                return RedirectToAction("Index", "Category", new { Area = "Admin" });
+            }
+            result.AddToModelState(this.ModelState);
+            return View();
+        }
+
+        public async Task<IActionResult> Delete(Guid categoryId)
+        {
+
+            var name = await categoryService.SafeDeleteCategoryAsync(categoryId);
+            toast.AddWarningToastMessage(Messages.Category.Delete(name), new ToastrOptions { Title = " İşlem Başarılı" });
+
+
+            return RedirectToAction("Index", "Category", new { Area = "Admin" });
+        }
+
     }
 }

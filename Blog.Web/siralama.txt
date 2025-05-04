@@ -553,8 +553,23 @@ ArticleService ve IArticleService içerisine gerekli değişiklikler yapıldı.
 
 
 ************************************************************************************************************************ 25 /
+CategoryController oluşturuldu ve Index'i eklendi ve içerisine gerekli değişiklikler yapıldı.
 
+ardından CategoryDto kısmında değişiklikler yapıldı.
+CategoryIndex.js oluşturuldu ve içerisine gerekli değişiklikler yapıldı.
 
+CategoryAddDto oluşturuldu ve içerisine gerekli değişiklikler yapıldı.
+
+CategoryService ve ICategoryService içerisine gerekli değişiklikler yapıldı.
+
+Map işlemleri yapıldı ve CategoryController içerisine gerekli değişiklikler yapıldı.
+CategoryAdd.cshtml dosyası oluşturuldu ve içerisine gerekli değişiklikler yapıldı.
+CategoryUpdate.cshtml dosyası oluşturuldu ve içerisine gerekli değişiklikler yapıldı.
+CategoryUpdateDto oluşturuldu ve içerisine gerekli değişiklikler yapıldı.
+CategoryValidator sınıfı oluşturuldu ve içerisine gerekli değişiklikler yapıldı.
+
+CategoryValidator sınıfı, CategoryAddDto ve CategoryUpdateDto sınıflarını doğrulamak için kullanılır.
+Bu sınıf, FluentValidation kütüphanesini kullanarak, CategoryAddDto ve CategoryUpdateDto sınıflarının doğrulama kurallarını tanımlar.
 
 
 

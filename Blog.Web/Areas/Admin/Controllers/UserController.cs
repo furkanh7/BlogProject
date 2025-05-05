@@ -22,7 +22,18 @@ namespace Blog.Web.Areas.Admin.Controllers
         {
             var users = await userManager.Users.ToListAsync();
             var map = mapper.Map<List<UserDto>>(users);
-            return View();
+
+            foreach (var item in map)
+            {
+                var findUser = await userManager.FindByIdAsync(item.Id.ToString());
+                var role = string.Join("", await userManager.GetRolesAsync(findUser));
+
+                item.Role = role;
+
+            }
+
+
+            return View(map);
         }
     }
 }

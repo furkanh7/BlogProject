@@ -585,7 +585,12 @@ ekleme kısmını makale kısmında yaptık .
 
 ************************************************************************************************************************ 27 /
 
-
+UserController oluşturuldu ve içerisine Index metodu eklendi.
+Index.cshtml dosyası oluşturuldu ve içerisine gerekli değişiklikler yapıldı.
+UserDto sınıfı oluşturuldu ve içerisine gerekli değişiklikler yapıldı.
+Index.cshtml dosyasında gerekli değişiklikler yapıldı.
+UserController içerisine gerekli değişiklikler yapıldı.
+AutoMapper kısmında mapleme işlemi yapıldı UserDto kısmı için.
 
 
 

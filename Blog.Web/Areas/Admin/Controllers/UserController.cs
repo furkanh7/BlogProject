@@ -60,7 +60,7 @@ namespace Blog.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 map.UserName = userAddDto.Email;
-                var result = await userManager.CreateAsync(map, userAddDto.Password);
+                var result = await userManager.CreateAsync(map, string.IsNullOrEmpty(userAddDto.Password) ? "" : userAddDto.Password);
                 if (result.Succeeded)
                 {
                     var findRole = await roleManager.FindByIdAsync(userAddDto.RoleId.ToString());

@@ -33,6 +33,22 @@
                 return $"{categoryName} Başlıklı Kategori Başarıyla Silinmiştir.";
             }
         }
+        public static class User
+        {
+            public static string Add(string userName)
+            {
+                return $"{userName} Email Adresli Kullanıcı Başarıyla Eklendi.";
+            }
+            public static string Update(string userName)
+            {
+                return $"{userName} Email Adresli Kullanıcı Başarıyla Güncellenmiştir.";
+            }
+            public static string Delete(string userName)
+            {
+                return $"{userName} Email Adresli Kullanıcı Başarıyla Silinmiştir.";
+            }
+        }
+        
      
     }
 }

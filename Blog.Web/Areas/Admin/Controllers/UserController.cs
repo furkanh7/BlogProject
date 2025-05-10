@@ -73,7 +73,7 @@ namespace Blog.Web.Areas.Admin.Controllers
                     foreach (var errors in result.Errors)
 
                         ModelState.AddModelError("", errors.Description);
-                    
+
                     return View(new UserAddDto
                     {
                         Roles = roles

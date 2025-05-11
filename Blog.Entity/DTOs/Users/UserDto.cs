@@ -8,7 +8,7 @@ namespace Blog.Entity.DTOs.Users
 {
     public class UserDto
     {
-
+        
         public Guid Id { get; set; }
 
         public string FirstName { get; set; }

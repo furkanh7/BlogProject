@@ -88,7 +88,7 @@ namespace Blog.Service.Services.Concrete
                     imageUpload.FullName,
                     articleUpdateDto.Photo.ContentType,
                     userEmail
-                    )
+                    );
                 await unitOfWork.GetRepository<Image>().AddAsync(image);
 
                 article.ImageId = image.Id;

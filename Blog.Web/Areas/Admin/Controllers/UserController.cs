@@ -95,6 +95,7 @@ namespace Blog.Web.Areas.Admin.Controllers
 
         [HttpGet]
 
+        [HttpGet]
         public async Task<IActionResult> Update(Guid userId)
         {
             var user = await userManager.FindByIdAsync(userId.ToString());
@@ -102,6 +103,16 @@ namespace Blog.Web.Areas.Admin.Controllers
 
             var map = mapper.Map<UserUpdateDto>(user);
             map.Roles = roles;
+
+            var userRoles = await userManager.GetRolesAsync(user);
+            var userRole = userRoles.FirstOrDefault();
+
+            if (userRole != null)
+            {
+                var role = await roleManager.FindByNameAsync(userRole);
+                map.RoleId = role.Id;
+            }
+
             return View(map);
         }
 
@@ -109,16 +120,13 @@ namespace Blog.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Update(UserUpdateDto userUpdateDto)
         {
             var user = await userManager.FindByIdAsync(userUpdateDto.Id.ToString());
-            if (user == null)
+            if (user != null)
             {
                 var userRole = string.Join("", await userManager.GetRolesAsync(user));
                 var roles = await roleManager.Roles.ToListAsync();
                 if (ModelState.IsValid)
                 {
                     mapper.Map(userUpdateDto, user);
-                    user.FirstName = userUpdateDto.FirstName;
-                    user.LastName = userUpdateDto.LastName;
-                    user.Email = userUpdateDto.Email;
                     user.UserName = userUpdateDto.Email;
                     user.SecurityStamp = Guid.NewGuid().ToString();
                     var result = await userManager.UpdateAsync(user);
@@ -152,6 +160,35 @@ namespace Blog.Web.Areas.Admin.Controllers
 
 
         }
+
+        public async Task<IActionResult> Delete(Guid userId)
+        {
+            var user = await userManager.FindByIdAsync(userId.ToString());
+
+            var result = await userManager.DeleteAsync(user);
+
+           
+
+            if (result.Succeeded)
+            {
+
+                toast.AddSuccessToastMessage(Messages.User.Delete(user.Email), new ToastrOptions { Title = "Başarılı" });
+                return RedirectToAction("Index", "User", new { Area = "Admin" });
+
+            }
+            else
+            {
+                foreach (var errors in result.Errors)
+                    ModelState.AddModelError("", errors.Description);
+               
+            }
+            return NotFound();
+
+
+
+        }
+
+
     }
 }
 

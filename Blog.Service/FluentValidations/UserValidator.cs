@@ -21,7 +21,7 @@ namespace Blog.Service.FluentValidations
                 .WithName("Ýsim");
 
             RuleFor(x => x.LastName)
-                .NotEmpty()    
+                .NotEmpty()
                 .MinimumLength(2)
                 .MaximumLength(50)
                 .WithName("Soyisim");

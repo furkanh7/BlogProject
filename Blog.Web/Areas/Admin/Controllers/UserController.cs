@@ -2,9 +2,10 @@
 using Blog.Entity.DTOs.Articles;
 using Blog.Entity.DTOs.Users;
 using Blog.Entity.Entities;
+using Blog.Service.Extensions;
 using Blog.Web.ResultMessages;
 using FluentValidation;
-using FluentValidation.AspNetCore;
+//using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -77,9 +78,10 @@ namespace Blog.Web.Areas.Admin.Controllers
                 }
                 else
                 {
-                    foreach (var errors in result.Errors)
+                    //foreach (var errors in result.Errors)
 
-                        ModelState.AddModelError("", errors.Description);
+                    //    ModelState.AddModelError("", errors.Description);
+                    result.AddToIdentityModelState(this.ModelState);
                     validation.AddToModelState(this.ModelState);
 
                     return View(new UserAddDto
@@ -153,9 +155,7 @@ namespace Blog.Web.Areas.Admin.Controllers
                         }
                         else
                         {
-                            foreach (var errors in result.Errors)
-
-                                ModelState.AddModelError("", errors.Description);
+                            result.AddToIdentityModelState(this.ModelState);
                             validation.AddToModelState(this.ModelState);
 
                             return View(new UserUpdateDto
@@ -202,8 +202,7 @@ namespace Blog.Web.Areas.Admin.Controllers
             }
             else
             {
-                foreach (var errors in result.Errors)
-                    ModelState.AddModelError("", errors.Description);
+                result.AddToIdentityModelState(this.ModelState);
 
             }
             return NotFound();

@@ -596,17 +596,49 @@ AutoMapper kısmında mapleme işlemi yapıldı UserDto kısmı için.
 
 
 ************************************************************************************************************************ 28 /
+Entity katmanında UserAddDto Klasörü oluşturuldu ve içerisine gerekli değişiklikler yapıldı.
+
+UserAddDto sınıfı, kullanıcı eklemek için kullanılan bir veri transfer nesnesidir (DTO).
+UserController içerisinde Add işlemi için Get ve Post metotları oluşturuldu.
+Ardından User için Add.cshtml dosyası oluşturuldu ve içerisine gerekli değişiklikler yapıldı.
 
 
 
 
 ************************************************************************************************************************ 29 /
+UserController içerisine Update işlemi için Get ve Post metotları oluşturuldu.
+Update.cshtml dosyası oluşturuldu ve içerisine gerekli değişiklikler yapıldı.
+
+ardından UserController içerisine Delete işlemi için gerekli değişiklikler yapıldı.
 
 
 
 ************************************************************************************************************************ 30 /
 
+Blog.Service katmanında Describers klasörü oluşturuldu ve içerisine
+CustomIdentityErrorDescriber sınıfı eklendi.
+Bu sınıf, ASP.NET Core Identity için hata mesajlarını özelleştirmek için kullanılır.
+Bu sınıf, IdentityErrorDescriber sınıfından miras alır ve hata mesajlarını özelleştirir.
+Bu sınıf, IdentityErrorDescriber sınıfının metotlarını override ederek hata mesajlarını özelleştirir.
 
+ardından FluentValidation kısmında gerekli değişiklikler yapıldı.
+UserValidator sınıfı oluşturuldu ve içerisine gerekli değişiklikler yapıldı.
+UserValidator sınıfı, FluentValidation kütüphanesini kullanarak, AppUser sınıfının doğrulama kurallarını tanımlar.
+Bu sınıf, AppUser sınıfının özelliklerini doğrulamak için kullanılır.
+
+Ardından ise UserController içerisine gerekli değişiklikler yapıldı.
+Extensions klasöründe ValidationExtensions sınıfında şu şekilde 
+  public static void AddToIdentityModelState(this IdentityResult result, ModelStateDictionary modelState)
+        {
+            foreach (var error in result.Errors)
+            {
+                modelState.AddModelError("",error.Description);
+            }
+        }
+Yapı eklendi.
+
+
+Hata mesajları Türkçeleştirerek ve sorunsuz şekilde gelmesi sağlandı.
 
 ************************************************************************************************************************ 31 /
 

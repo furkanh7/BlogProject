@@ -5,6 +5,7 @@ using Blog.Service.Extensions;
 using Blog.Entity.Entities;
 using Microsoft.AspNetCore.Identity;
 using NToastNotify;
+using Blog.Service.Describers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +46,7 @@ builder.Services.AddIdentity<AppUser, AppRole>(opt =>
 })
 
 .AddRoleManager<RoleManager<AppRole>>()
+.AddErrorDescriber<CustomIdentityErrorDescriber>()
 .AddEntityFrameworkStores<AppDbContext>()
 .AddDefaultTokenProviders();
 

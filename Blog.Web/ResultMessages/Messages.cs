@@ -17,6 +17,10 @@
             {
                 return $"{articleTitle} Başlıklı Makale Başarıyla Silinmiştir.";
             }
+            public static string UndoDelete(string articleTitle)
+            {
+                return $"{articleTitle} Başlıklı Makale Başarıyla geri alınmıştır.";
+            }
         }
         public static class Category
         {

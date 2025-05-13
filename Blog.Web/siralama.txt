@@ -657,6 +657,21 @@ bu yapı silinmiş makaleleri ve kategorileri listelemek ve tekrar yüklemek iç
 
 
 ************************************************************************************************************************ 32 /
+AuthController Kısmında 
+[HttpGet]
+        public async Task<IActionResult> AccessDenied()
+        {
+           return View();
+        }
+kısmı eklendi ve 
+Ardından AccessDenied.cshtml dosyası oluşturuldu ve içerisine gerekli değişiklikler yapıldı.
+Yetkilendirilmemiş sayfaya erişim sağlandığında kullanıcıyı yönlendirmek için kullanılır.
+Ardından ise
+ArticleController içerisinde ihtiyaca göre Authorize attribute'u eklendi.
+bunlar ise şu şekilde
+[Authorize(Roles="Superadmin, Admin, User ")]
+[Authorize(Roles = "Superadmin, Admin,")]
+
 
 
 

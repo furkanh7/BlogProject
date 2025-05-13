@@ -113,8 +113,8 @@ namespace Blog.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Delete(Guid articleId)
         {
-            
-            var title=  await articleService.SafeDeleteArticleAsync(articleId);
+
+            var title = await articleService.SafeDeleteArticleAsync(articleId);
             toast.AddWarningToastMessage(Messages.Article.Delete(title), new ToastrOptions { Title = " İşlem Başarılı" });
 
             return RedirectToAction("Index", "Article", new { Area = "Admin" });

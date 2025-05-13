@@ -31,13 +31,13 @@ namespace Blog.Web.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var articles = await articleService.GetAllArticlesWithCategoryDeletedAsync();
+            var articles = await articleService.GetAllArticlesWithCategoryNonDeletedAsync();
             return View(articles);
         }
         [HttpGet]
         public async Task<IActionResult> DeletedArticle()
         {
-            var articles = await articleService.GetAllArticlesWithCategoryNonDeletedAsync();
+            var articles = await articleService.GetAllArticlesWithCategoryDeletedAsync();
             return View(articles);
         }
         [HttpGet]
@@ -123,7 +123,7 @@ namespace Blog.Web.Areas.Admin.Controllers
         {
             
             var title=  await articleService.UndoDeleteArticleAsync(articleId);
-            toast.AddWarningToastMessage(Messages.Article.UndoDelete(title), new ToastrOptions { Title = " İşlem Başarılı" });
+                toast.AddWarningToastMessage(Messages.Article.UndoDelete(title), new ToastrOptions { Title = " İşlem Başarılı" });
 
             return RedirectToAction("Index", "Article", new { Area = "Admin" });
         }

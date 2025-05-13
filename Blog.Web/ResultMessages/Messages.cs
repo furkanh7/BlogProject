@@ -35,6 +35,10 @@
             public static string Delete(string categoryName)
             {
                 return $"{categoryName} Başlıklı Kategori Başarıyla Silinmiştir.";
+            } 
+            public static string UndoDelete(string categoryName)
+            {
+                return $"{categoryName} Başlıklı Kategori  Başarıyla geri alınmıştır.";
             }
         }
         public static class User

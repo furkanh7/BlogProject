@@ -642,6 +642,17 @@ Hata mesajları Türkçeleştirerek ve sorunsuz şekilde gelmesi sağlandı.
 
 ************************************************************************************************************************ 31 /
 
+IArticleService içerisine Task<List<ArticleDto>> GetAllArticlesWithCategoryDeletedAsync(); metodu eklendi ve gerekli değişiklikler yapıldı.
+ArticleService içerisine implement edildi ve gerekli değişiklikler yapıldı.
+ArticleController içerisine gerekli değişiklikler yapıldı.
+ArticleController içerisine DeletedArticles metodu eklendi ve gerekli değişiklikler yapıldı.
+ArticelController içerisine UndoDeleted metodu eklendi ve gerekli değişiklikler yapıldı.
+Ardından DeletedArticles.cshtml dosyası oluşturuldu ve içerisine gerekli değişiklikler yapıldı.
+
+Aynı işlemleri Category Kısımlari içinde yapıldı.
+
+bu yapı silinmiş makaleleri ve kategorileri listelemek ve tekrar yüklemek için kullanılır.
+
 
 
 

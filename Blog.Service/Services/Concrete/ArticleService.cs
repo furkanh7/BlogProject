@@ -110,18 +110,20 @@ namespace Blog.Service.Services.Concrete
         {
             var userEmail = _user.GetLoggedInEmail();
             var article = await unitOfWork.GetRepository<Article>().GetByGuidAsync(articleId);
+
             article.IsDeleted = true;
             article.DeletedDate = DateTime.Now;
             article.DeletedBy = userEmail;
 
             await unitOfWork.GetRepository<Article>().UpdateAsync(article);
             await unitOfWork.SaveAsync();
+
             return article.Title;
         }
 
         public async Task<List<ArticleDto>> GetAllArticlesWithCategoryDeletedAsync()
         {
-            var articles = await unitOfWork.GetRepository<Article>().GetAllAsync(x => x.IsDeleted, x => x.Category, i => i.Image);
+            var articles = await unitOfWork.GetRepository<Article>().GetAllAsync(x => x.IsDeleted, x => x.Category);
             var map = mapper.Map<List<ArticleDto>>(articles);
 
             return map;
@@ -129,7 +131,7 @@ namespace Blog.Service.Services.Concrete
 
         public async Task<string> UndoDeleteArticleAsync(Guid articleId)
         {
-            var userEmail = _user.GetLoggedInEmail();
+            
             var article = await unitOfWork.GetRepository<Article>().GetByGuidAsync(articleId);
 
             article.IsDeleted = false;

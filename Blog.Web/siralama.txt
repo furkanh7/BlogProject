@@ -678,8 +678,31 @@ bunlar ise şu şekilde
 
 ************************************************************************************************************************ 33 /
 
+Blog.Web Katmanında Areas -> Admin Klasorü içerisinde ViewComponents Klasörü oluşturuldu
+ViewComponents'in içerisine DashboardHeaderViewComponent sınıfı eklendi.
 
+DashboardHeaderViewComponent sınıfı, ViewComponent sınıfından miras alır ve IViewComponentResult döndürür.
+Bu sınıf, admin panelinin üst kısmında yer alan başlık kısmını oluşturur.
+ _Layout yapsının içerisinden bu kısıma 
+ @await Component.InvokeAsync("DashboardHeader")
+ şeklinde yol verdik 
+ Ardından Shared içerisine Component klasörünü oluşturduk
+ ardından içerisine DasboardHeader Klasörü oluşturuldu
+ son olarak da içerisine Default.cshtml dosyası oluşturuldu ve içerisine gerekli değişiklikler yapıldı.
+ Yapının içerisini ise güncelledik 
 
+ Ve Ardından bir önceki kısımda eklediğiminiz
+ Authorize(Roles="Superadmin, Admin, User ") kısmını kaldırdık.
+ Çünkü bu yapı sağlıklı bir yapı değil
+ bunun yerinde 
+ Blog.Web Katmanında Consts Klasörü oluşturuldu ve içerisine RoleConsts sınıfı eklendi.
+ Bu sınıf, uygulama genelinde kullanılacak olan rol isimlerini tutar.
+ bir önceki kısımda kullandığımız 
+ Authorize(Roles="Superadmin, Admin, User ")]
+ şeklindeki olan yapıyı 
+ [Authorize(Roles = $"{RoleConsts.Superadmin}, {RoleConsts.Admin}")]
+ olarak güncelledik 
+ bu değişikliği ArticleController'ın indexine de uyarladık 
 
 
 ************************************************************************************************************************ 34 /

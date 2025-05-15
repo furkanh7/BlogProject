@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
+using Blog.Data.UnitOfWorks;
 using Blog.Entity.DTOs.Articles;
 using Blog.Entity.DTOs.Users;
 using Blog.Entity.Entities;
+using Blog.Entity.Enums;
 using Blog.Service.Extensions;
+using Blog.Service.Helpers.Images;
 using Blog.Web.ResultMessages;
 using FluentValidation;
 //using FluentValidation.AspNetCore;
@@ -19,16 +22,20 @@ namespace Blog.Web.Areas.Admin.Controllers
     public class UserController : Controller
     {
         private readonly UserManager<AppUser> userManager;
+        private readonly IUnitOfWork unitOfWork;
         private readonly RoleManager<AppRole> roleManager;
+        private readonly IImageHelper imageHelper;
         private readonly IValidator<AppUser> validator;
         private readonly SignInManager<AppUser> signInManager;
         private readonly IMapper mapper;
         private readonly IToastNotification toast;
 
-        public UserController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, IValidator<AppUser> validator, SignInManager<AppUser> signInManager, IMapper mapper, IToastNotification toast)
+        public UserController(UserManager<AppUser> userManager, IUnitOfWork unitOfWork, RoleManager<AppRole> roleManager, IImageHelper imageHelper, IValidator<AppUser> validator, SignInManager<AppUser> signInManager, IMapper mapper, IToastNotification toast)
         {
             this.userManager = userManager;
+            this.unitOfWork = unitOfWork;
             this.roleManager = roleManager;
+            this.imageHelper = imageHelper;
             this.validator = validator;
             this.signInManager = signInManager;
             this.mapper = mapper;
@@ -217,7 +224,9 @@ namespace Blog.Web.Areas.Admin.Controllers
         {
 
             var user = await userManager.GetUserAsync(HttpContext.User);
+            var getImage = await unitOfWork.GetRepository<AppUser>().GetAsync(x => x.Id == user.Id, x=>x.Image );
             var map = mapper.Map<UserProfileDto>(user);
+            map.Image.FileName = getImage.Image.FileName;
 
             return View(map);
         }
@@ -229,7 +238,7 @@ namespace Blog.Web.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 var IsVerified = await userManager.CheckPasswordAsync(user, userProfileDto.CurrentPassword);
-                if (IsVerified && userProfileDto.NewPassword != null)
+                if (IsVerified && userProfileDto.NewPassword != null && userProfileDto.Photo != null)
                 {
                     var result = await userManager.ChangePasswordAsync(user, userProfileDto.CurrentPassword, userProfileDto.NewPassword);
                     if (result.Succeeded)
@@ -241,7 +250,24 @@ namespace Blog.Web.Areas.Admin.Controllers
                         user.FirstName = userProfileDto.FirstName;
                         user.LastName = userProfileDto.LastName;
                         user.PhoneNumber = userProfileDto.PhoneNumber;
+
+                        var imageUpload = await imageHelper.Upload($"{userProfileDto.FirstName}{userProfileDto.LastName} ", userProfileDto.Photo, ImageType.User);
+                        Image image = new Image
+                        (
+                            imageUpload.FullName,
+                            userProfileDto.Photo.ContentType,
+                        user.Email
+
+                            );
+
+                        await unitOfWork.GetRepository<Image>().AddAsync(image);
+
+                        user.ImageId = image.Id;
+
+
                         await userManager.UpdateAsync(user);
+
+                        await unitOfWork.SaveAsync();
 
 
                         toast.AddSuccessToastMessage("Şifreniz ve Bilgileriniz Başarıyla Güncellenmiştir ");
@@ -256,13 +282,30 @@ namespace Blog.Web.Areas.Admin.Controllers
 
                 }
 
-                else if (IsVerified)
+                else if (IsVerified && userProfileDto.Photo != null)
                 {
                     await userManager.UpdateSecurityStampAsync(user);
                     user.FirstName = userProfileDto.FirstName;
                     user.LastName = userProfileDto.LastName;
                     user.PhoneNumber = userProfileDto.PhoneNumber;
+                    var imageUpload = await imageHelper.Upload($"{userProfileDto.FirstName}{userProfileDto.LastName} ", userProfileDto.Photo, ImageType.User);
+                    Image image = new Image
+                    (
+                        imageUpload.FullName,
+                        userProfileDto.Photo.ContentType,
+                    user.Email
+
+                        );
+
+                    await unitOfWork.GetRepository<Image>().AddAsync(image);
+
+                    user.ImageId = image.Id;
+
+
                     await userManager.UpdateAsync(user);
+
+                    await unitOfWork.SaveAsync();
+                  
                     toast.AddSuccessToastMessage("Bilgileriniz Başarıyla Güncellenmiştir ");
                     return View();
 

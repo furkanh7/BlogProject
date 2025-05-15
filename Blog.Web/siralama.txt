@@ -706,6 +706,14 @@ Bu sınıf, admin panelinin üst kısmında yer alan başlık kısmını oluştu
 
 
 ************************************************************************************************************************ 34 /
+UserController içerisine Profile metodu eklendi ve gerekli değişiklikler yapıldı.
+Profile.cshtml dosyası oluşturuldu ve içerisine gerekli değişiklikler yapıldı.
+bu metod, kullanıcının profil bilgilerini görüntülemek ve değiştirmek için kullanılır.
+
+UserProfileDto sınıfı oluşturuldu ve içerisine gerekli değişiklikler yapıldı.
+
+UserControllerde bulunan Profile metodu clean code olmadığı için güncellenecek
+
 
 
 ************************************************************************************************************************ 35 /

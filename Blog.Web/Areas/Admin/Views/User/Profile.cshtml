@@ -14,13 +14,12 @@
                 <form asp-controller="User" asp-action="Profile" method="POST" enctype="multipart/form-data">
                     <!-- Account -->
                     <div class="card-body">
-
                         <div class="d-flex align-items-start align-items-sm-center gap-4">
-                            <img src="" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar">
+                            <img src="~/images/@Model.Image.FileName" alt="user-avatar" class="d-block rounded" height="100" width="100" id="uploadedAvatar">
                             <div class="button-wrapper">
                                 <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
                                     <i class="bx bx-upload d-block d-sm-none"></i>
-                                    <input  type="file" accept="image/*" class="formaccount-file-input" id="defaultFormControlInput" aria-describedby="defaultFormControlHelp">
+                                    <input asp-for="Photo" type="file" accept="image/*" class="formaccount-file-input" id="defaultFormControlInput" aria-describedby="defaultFormControlHelp">
                                 </label>
 
                             </div>

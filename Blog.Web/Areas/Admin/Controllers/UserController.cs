@@ -21,14 +21,16 @@ namespace Blog.Web.Areas.Admin.Controllers
         private readonly UserManager<AppUser> userManager;
         private readonly RoleManager<AppRole> roleManager;
         private readonly IValidator<AppUser> validator;
+        private readonly SignInManager<AppUser> signInManager;
         private readonly IMapper mapper;
         private readonly IToastNotification toast;
 
-        public UserController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, IValidator<AppUser> validator, IMapper mapper, IToastNotification toast)
+        public UserController(UserManager<AppUser> userManager, RoleManager<AppRole> roleManager, IValidator<AppUser> validator, SignInManager<AppUser> signInManager, IMapper mapper, IToastNotification toast)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.validator = validator;
+            this.signInManager = signInManager;
             this.mapper = mapper;
             this.toast = toast;
         }
@@ -138,7 +140,7 @@ namespace Blog.Web.Areas.Admin.Controllers
                     var map = mapper.Map(userUpdateDto, user);
                     var validation = await validator.ValidateAsync(map);
 
-                    if (validation.IsValid) 
+                    if (validation.IsValid)
                     {
                         user.UserName = userUpdateDto.Email;
                         user.SecurityStamp = Guid.NewGuid().ToString();
@@ -210,8 +212,70 @@ namespace Blog.Web.Areas.Admin.Controllers
 
 
         }
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+
+            var user = await userManager.GetUserAsync(HttpContext.User);
+            var map = mapper.Map<UserProfileDto>(user);
+
+            return View(map);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Profile(UserProfileDto userProfileDto)
+        {
+            var user = await userManager.GetUserAsync(HttpContext.User);
+
+            if (ModelState.IsValid)
+            {
+                var IsVerified = await userManager.CheckPasswordAsync(user, userProfileDto.CurrentPassword);
+                if (IsVerified && userProfileDto.NewPassword != null)
+                {
+                    var result = await userManager.ChangePasswordAsync(user, userProfileDto.CurrentPassword, userProfileDto.NewPassword);
+                    if (result.Succeeded)
+                    {
+                        await userManager.UpdateSecurityStampAsync(user);
+                        await signInManager.SignOutAsync();
+                        await signInManager.PasswordSignInAsync(user, userProfileDto.NewPassword, true, false);
+
+                        user.FirstName = userProfileDto.FirstName;
+                        user.LastName = userProfileDto.LastName;
+                        user.PhoneNumber = userProfileDto.PhoneNumber;
+                        await userManager.UpdateAsync(user);
 
 
+                        toast.AddSuccessToastMessage("Şifreniz ve Bilgileriniz Başarıyla Güncellenmiştir ");
+                        return View();
+
+                    }
+                    else
+
+                        result.AddToIdentityModelState(this.ModelState);
+                    return View();
+
+
+                }
+
+                else if (IsVerified)
+                {
+                    await userManager.UpdateSecurityStampAsync(user);
+                    user.FirstName = userProfileDto.FirstName;
+                    user.LastName = userProfileDto.LastName;
+                    user.PhoneNumber = userProfileDto.PhoneNumber;
+                    await userManager.UpdateAsync(user);
+                    toast.AddSuccessToastMessage("Bilgileriniz Başarıyla Güncellenmiştir ");
+                    return View();
+
+
+                }
+                else
+                    toast.AddErrorToastMessage("Bilgileriniz Güncellenirken Bir Hata Oluştu ");
+                return View();
+            }
+            return View();
+
+
+        }
     }
 }
 

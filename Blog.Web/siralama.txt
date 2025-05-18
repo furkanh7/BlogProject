@@ -717,6 +717,18 @@ UserControllerde bulunan Profile metodu clean code olmadığı için güncellene
 
 
 ************************************************************************************************************************ 35 /
+IUserService Oluşturuldu ve IUserService interface'i eklendi.
+UserService sınıfı oluşturuldu ve IUserService interface'i implement edildi.
+UserService sınıfı, kullanıcı işlemleri için gerekli olan metotları içerir.
+IUserService interface'i, kullanıcı işlemleri için gerekli olan metotları tanımlar.
+
+UserController içerisindeki Index Kısmı UserService'e taşındı.
+UserController içerisine gerekli değişiklikler yapıldı(contructor kısmına IUserService dahil edildi).
+
+UserController içerisindeki Add Kısmı UserService'e taşındı.
+UserController içerisindeki Update Kısmı UserService'e taşındı.
+UserController içerisindeki Delete Kısmı UserService'e taşındı.
+
 
 
 

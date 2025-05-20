@@ -32,7 +32,7 @@ namespace Blog.Web.Areas.Admin.Controllers
         private readonly IMapper mapper;
         private readonly IToastNotification toast;
 
-        public UserController(UserManager<AppUser> userManager,IUserService userService ,IUnitOfWork unitOfWork, RoleManager<AppRole> roleManager, IImageHelper imageHelper, IValidator<AppUser> validator, SignInManager<AppUser> signInManager, IMapper mapper, IToastNotification toast)
+        public UserController(UserManager<AppUser> userManager, IUserService userService, IUnitOfWork unitOfWork, RoleManager<AppRole> roleManager, IImageHelper imageHelper, IValidator<AppUser> validator, SignInManager<AppUser> signInManager, IMapper mapper, IToastNotification toast)
         {
             this.userManager = userManager;
             this.userService = userService;
@@ -46,7 +46,7 @@ namespace Blog.Web.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Index()
         {
-           var result = await userService.GetAllUserWithRoleAsync();
+            var result = await userService.GetAllUserWithRoleAsync();
 
             return View(result);
         }
@@ -70,12 +70,12 @@ namespace Blog.Web.Areas.Admin.Controllers
             {
                 var result = await userService.CreateUserAsync(userAddDto);
                 if (result.Succeeded)
-                {               
+                {
                     toast.AddSuccessToastMessage(Messages.User.Add(userAddDto.Email), new ToastrOptions { Title = "Başarılı" });
                     RedirectToAction("Index", "User", new { Area = "Admin" });
                 }
                 else
-                { 
+                {
                     result.AddToIdentityModelState(this.ModelState);
                     validation.AddToModelState(this.ModelState);
 
@@ -96,7 +96,7 @@ namespace Blog.Web.Areas.Admin.Controllers
             });
         }
 
-      
+
         [HttpGet]
         public async Task<IActionResult> Update(Guid userId)
         {
@@ -176,9 +176,9 @@ namespace Blog.Web.Areas.Admin.Controllers
 
         public async Task<IActionResult> Delete(Guid userId)
         {
-            
 
-            var result =  await userService.DeleteUserAsync(userId);
+
+            var result = await userService.DeleteUserAsync(userId);
 
 
 
@@ -210,13 +210,29 @@ namespace Blog.Web.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Profile(UserProfileDto userProfileDto)
         {
-            var user = await userManager.GetUserAsync(HttpContext.User);
+            
 
             if (ModelState.IsValid)
             {
-              
-               
-            return View();
+                var result = await userService.UserProfileUpdateAsync(userProfileDto);
+
+
+                if(result)
+                {
+                    toast.AddSuccessToastMessage("Profil güncelleme işlemi tamamlandı" ,new ToastrOptions { Title = "Başarılı" });
+                    return RedirectToAction("Index", "Home", new { Area = "Admin" });
+                }
+                else
+                {
+                    var profile = await userService.GetUserProfileAsync();
+                    toast.AddErrorToastMessage("Profil güncelleme işlemi tamamlanamadı", new ToastrOptions { Title = "Başarısız" });
+                    return View(profile);
+                }
+
+            }
+            else 
+               return NotFound();
+
 
 
         }

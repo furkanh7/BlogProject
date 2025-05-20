@@ -124,6 +124,7 @@ namespace Blog.Service.Services.Concrete
 
         }
 
+
         public async Task<UserProfileDto> GetUserProfileAsync()
         {
             var userId = _user.GetLoggedInUserId();
@@ -133,13 +134,32 @@ namespace Blog.Service.Services.Concrete
             map.Image.FileName = getUserWithImage.Image.FileName;
             return map;
         }
+        private async Task<Guid> UploadImageForUser(UserProfileDto userProfileDto)
+        {
+            var userEmail = _user.GetLoggedInEmail();
+            var imageUpload = await imageHelper.Upload($"{userProfileDto.FirstName}{userProfileDto.LastName} ", userProfileDto.Photo, ImageType.User);
+            Image image = new Image
+            (
+                imageUpload.FullName,
+                userProfileDto.Photo.ContentType,
+            userEmail
+
+                );
+
+            await unitOfWork.GetRepository<Image>().AddAsync(image);
+
+            return image.Id;
+
+        }
+
+
         public async Task<bool> UserProfileUpdateAsync(UserProfileDto userProfileDto)
         {
             var userId = _user.GetLoggedInUserId();
             var user = await GetAppUserByIdAsync(userId);
 
             var IsVerified = await userManager.CheckPasswordAsync(user, userProfileDto.CurrentPassword);
-            if (IsVerified && userProfileDto.NewPassword != null && userProfileDto.Photo != null)
+            if (IsVerified && userProfileDto.NewPassword != null )
             {
                 var result = await userManager.ChangePasswordAsync(user, userProfileDto.CurrentPassword, userProfileDto.NewPassword);
                 if (result.Succeeded)
@@ -148,60 +168,34 @@ namespace Blog.Service.Services.Concrete
                     await signInManager.SignOutAsync();
                     await signInManager.PasswordSignInAsync(user, userProfileDto.NewPassword, true, false);
 
-                    user.FirstName = userProfileDto.FirstName;
-                    user.LastName = userProfileDto.LastName;
-                    user.PhoneNumber = userProfileDto.PhoneNumber;
+                    mapper.Map(userProfileDto, user);
 
-                    var imageUpload = await imageHelper.Upload($"{userProfileDto.FirstName}{userProfileDto.LastName} ", userProfileDto.Photo, ImageType.User);
-                    Image image = new Image
-                    (
-                        imageUpload.FullName,
-                        userProfileDto.Photo.ContentType,
-                    user.Email
+                    if (userProfileDto.Photo != null)         
+                        user.ImageId = await UploadImageForUser(userProfileDto);
 
-                        );
-
-                    await unitOfWork.GetRepository<Image>().AddAsync(image);
-
-                    user.ImageId = image.Id;
                     await userManager.UpdateAsync(user);
                     await unitOfWork.SaveAsync();
 
-
                     return true;
-
                 }
                 else
 
                     return false;
             }
 
-            else if (IsVerified && userProfileDto.Photo != null)
+            else if (IsVerified)
             {
                 await userManager.UpdateSecurityStampAsync(user);
-                user.FirstName = userProfileDto.FirstName;
-                user.LastName = userProfileDto.LastName;
-                user.PhoneNumber = userProfileDto.PhoneNumber;
-                var imageUpload = await imageHelper.Upload($"{userProfileDto.FirstName}{userProfileDto.LastName} ", userProfileDto.Photo, ImageType.User);
-                Image image = new Image
-                (
-                    imageUpload.FullName,
-                    userProfileDto.Photo.ContentType,
-                user.Email
+                mapper.Map(userProfileDto, user);
 
-                    );
-
-                await unitOfWork.GetRepository<Image>().AddAsync(image);
-
-                user.ImageId = image.Id;
-
+                if (userProfileDto.Photo != null)
+                    user.ImageId = await UploadImageForUser(userProfileDto);
 
                 await userManager.UpdateAsync(user);
 
                 await unitOfWork.SaveAsync();
 
                 return true;
-
 
             }
             else

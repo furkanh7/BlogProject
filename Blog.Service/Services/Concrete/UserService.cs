@@ -2,12 +2,18 @@ using AutoMapper;
 using Blog.Data.UnitOfWorks;
 using Blog.Entity.DTOs.Users;
 using Blog.Entity.Entities;
+using Blog.Entity.Enums;
+using Blog.Service.Extensions;
+using Blog.Service.Helpers.Images;
 using Blog.Service.Services.Abstractions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,15 +22,23 @@ namespace Blog.Service.Services.Concrete
     public class UserService : IUserService
     {
         private readonly IUnitOfWork unitOfWork;
+        private readonly IImageHelper imageHelper;
+        private readonly IHttpContextAccessor httpContextAccessor;
         private readonly IMapper mapper;
         private readonly UserManager<AppUser> userManager;
+        private readonly SignInManager<AppUser> signInManager;
         private readonly RoleManager<AppRole> roleManager;
+        private readonly ClaimsPrincipal _user;
 
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
+        public UserService(IUnitOfWork unitOfWork, IImageHelper imageHelper, IHttpContextAccessor httpContextAccessor, IMapper mapper, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<AppRole> roleManager)
         {
             this.unitOfWork = unitOfWork;
+            this.imageHelper = imageHelper;
+            this.httpContextAccessor = httpContextAccessor;
+            _user = httpContextAccessor.HttpContext.User;
             this.mapper = mapper;
             this.userManager = userManager;
+            this.signInManager = signInManager;
             this.roleManager = roleManager;
         }
 
@@ -46,14 +60,14 @@ namespace Blog.Service.Services.Concrete
         public async Task<(IdentityResult identityResult, string? email)> DeleteUserAsync(Guid userId)
         {
             var user = await GetAppUserByIdAsync(userId);
-            var result =  await userManager.DeleteAsync(user);
+            var result = await userManager.DeleteAsync(user);
             if (result.Succeeded)
             {
-                return (result,user.Email);
+                return (result, user.Email);
             }
             else
             {
-                return (result,null);
+                return (result, null);
             }
         }
 
@@ -87,7 +101,7 @@ namespace Blog.Service.Services.Concrete
 
         public async Task<string> GetUserRoleAsync(AppUser user)
         {
-           return string.Join("", await userManager.GetRolesAsync(user));
+            return string.Join("", await userManager.GetRolesAsync(user));
         }
 
         public async Task<IdentityResult> UpdateUserAsync(UserUpdateDto userUpdateDto)
@@ -109,5 +123,97 @@ namespace Blog.Service.Services.Concrete
 
 
         }
+
+        public async Task<UserProfileDto> GetUserProfileAsync()
+        {
+            var userId = _user.GetLoggedInUserId();
+
+            var getUserWithImage = await unitOfWork.GetRepository<AppUser>().GetAsync(x => x.Id == userId, x => x.Image);
+            var map = mapper.Map<UserProfileDto>(getUserWithImage);
+            map.Image.FileName = getUserWithImage.Image.FileName;
+            return map;
+        }
+        public async Task<bool> UserProfileUpdateAsync(UserProfileDto userProfileDto)
+        {
+            var userId = _user.GetLoggedInUserId();
+            var user = await GetAppUserByIdAsync(userId);
+
+            var IsVerified = await userManager.CheckPasswordAsync(user, userProfileDto.CurrentPassword);
+            if (IsVerified && userProfileDto.NewPassword != null && userProfileDto.Photo != null)
+            {
+                var result = await userManager.ChangePasswordAsync(user, userProfileDto.CurrentPassword, userProfileDto.NewPassword);
+                if (result.Succeeded)
+                {
+                    await userManager.UpdateSecurityStampAsync(user);
+                    await signInManager.SignOutAsync();
+                    await signInManager.PasswordSignInAsync(user, userProfileDto.NewPassword, true, false);
+
+                    user.FirstName = userProfileDto.FirstName;
+                    user.LastName = userProfileDto.LastName;
+                    user.PhoneNumber = userProfileDto.PhoneNumber;
+
+                    var imageUpload = await imageHelper.Upload($"{userProfileDto.FirstName}{userProfileDto.LastName} ", userProfileDto.Photo, ImageType.User);
+                    Image image = new Image
+                    (
+                        imageUpload.FullName,
+                        userProfileDto.Photo.ContentType,
+                    user.Email
+
+                        );
+
+                    await unitOfWork.GetRepository<Image>().AddAsync(image);
+
+                    user.ImageId = image.Id;
+                    await userManager.UpdateAsync(user);
+                    await unitOfWork.SaveAsync();
+
+
+                    return true;
+
+                }
+                else
+
+                    return false;
+            }
+
+            else if (IsVerified && userProfileDto.Photo != null)
+            {
+                await userManager.UpdateSecurityStampAsync(user);
+                user.FirstName = userProfileDto.FirstName;
+                user.LastName = userProfileDto.LastName;
+                user.PhoneNumber = userProfileDto.PhoneNumber;
+                var imageUpload = await imageHelper.Upload($"{userProfileDto.FirstName}{userProfileDto.LastName} ", userProfileDto.Photo, ImageType.User);
+                Image image = new Image
+                (
+                    imageUpload.FullName,
+                    userProfileDto.Photo.ContentType,
+                user.Email
+
+                    );
+
+                await unitOfWork.GetRepository<Image>().AddAsync(image);
+
+                user.ImageId = image.Id;
+
+
+                await userManager.UpdateAsync(user);
+
+                await unitOfWork.SaveAsync();
+
+                return true;
+
+
+            }
+            else
+                return false;
+        }
+
+
+
+
+
+
+
     }
+
 }

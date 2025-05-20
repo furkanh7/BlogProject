@@ -733,6 +733,8 @@ UserController içerisindeki Delete Kısmı UserService'e taşındı.
 
 
 ************************************************************************************************************************ 36 /
+kod optimizasyonuna devam edildi önceki derste olduğu gibi 
+UserController içerisindeki Profile Kısmı UserService'e taşındı.
 
 
 

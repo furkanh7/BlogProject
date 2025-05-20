@@ -203,12 +203,9 @@ namespace Blog.Web.Areas.Admin.Controllers
         public async Task<IActionResult> Profile()
         {
 
-            var user = await userManager.GetUserAsync(HttpContext.User);
-            var getImage = await unitOfWork.GetRepository<AppUser>().GetAsync(x => x.Id == user.Id, x=>x.Image );
-            var map = mapper.Map<UserProfileDto>(user);
-            map.Image.FileName = getImage.Image.FileName;
+            var profile = await userService.GetUserProfileAsync();
 
-            return View(map);
+            return View(profile);
         }
         [HttpPost]
         public async Task<IActionResult> Profile(UserProfileDto userProfileDto)
@@ -217,84 +214,8 @@ namespace Blog.Web.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                var IsVerified = await userManager.CheckPasswordAsync(user, userProfileDto.CurrentPassword);
-                if (IsVerified && userProfileDto.NewPassword != null && userProfileDto.Photo != null)
-                {
-                    var result = await userManager.ChangePasswordAsync(user, userProfileDto.CurrentPassword, userProfileDto.NewPassword);
-                    if (result.Succeeded)
-                    {
-                        await userManager.UpdateSecurityStampAsync(user);
-                        await signInManager.SignOutAsync();
-                        await signInManager.PasswordSignInAsync(user, userProfileDto.NewPassword, true, false);
-
-                        user.FirstName = userProfileDto.FirstName;
-                        user.LastName = userProfileDto.LastName;
-                        user.PhoneNumber = userProfileDto.PhoneNumber;
-
-                        var imageUpload = await imageHelper.Upload($"{userProfileDto.FirstName}{userProfileDto.LastName} ", userProfileDto.Photo, ImageType.User);
-                        Image image = new Image
-                        (
-                            imageUpload.FullName,
-                            userProfileDto.Photo.ContentType,
-                        user.Email
-
-                            );
-
-                        await unitOfWork.GetRepository<Image>().AddAsync(image);
-
-                        user.ImageId = image.Id;
-
-
-                        await userManager.UpdateAsync(user);
-
-                        await unitOfWork.SaveAsync();
-
-
-                        toast.AddSuccessToastMessage("Şifreniz ve Bilgileriniz Başarıyla Güncellenmiştir ");
-                        return View();
-
-                    }
-                    else
-
-                        result.AddToIdentityModelState(this.ModelState);
-                    return View();
-
-
-                }
-
-                else if (IsVerified && userProfileDto.Photo != null)
-                {
-                    await userManager.UpdateSecurityStampAsync(user);
-                    user.FirstName = userProfileDto.FirstName;
-                    user.LastName = userProfileDto.LastName;
-                    user.PhoneNumber = userProfileDto.PhoneNumber;
-                    var imageUpload = await imageHelper.Upload($"{userProfileDto.FirstName}{userProfileDto.LastName} ", userProfileDto.Photo, ImageType.User);
-                    Image image = new Image
-                    (
-                        imageUpload.FullName,
-                        userProfileDto.Photo.ContentType,
-                    user.Email
-
-                        );
-
-                    await unitOfWork.GetRepository<Image>().AddAsync(image);
-
-                    user.ImageId = image.Id;
-
-
-                    await userManager.UpdateAsync(user);
-
-                    await unitOfWork.SaveAsync();
-                  
-                    toast.AddSuccessToastMessage("Bilgileriniz Başarıyla Güncellenmiştir ");
-                    return View();
-
-
-                }
-                else
-                    toast.AddErrorToastMessage("Bilgileriniz Güncellenirken Bir Hata Oluştu ");
-                return View();
-            }
+              
+               
             return View();
 
 

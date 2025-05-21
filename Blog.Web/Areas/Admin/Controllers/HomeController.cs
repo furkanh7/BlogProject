@@ -1,9 +1,8 @@
-﻿using Blog.Entity.Entities;
-using Blog.Service.Services.Abstractions;
+﻿using Blog.Service.Services.Abstractions;
+using Blog.Service.Services.Concrete;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+using Newtonsoft.Json;
 
 namespace Blog.Web.Areas.Admin.Controllers
 {
@@ -12,12 +11,12 @@ namespace Blog.Web.Areas.Admin.Controllers
     public class HomeController : Controller
     {
         private readonly IArticleService articleService;
-        
+        private readonly IDashboardService dashboardService;
 
-        public HomeController(IArticleService articleService)
+        public HomeController(IArticleService articleService, IDashboardService dashboardService)
         {
-            this.articleService = articleService;  
-           
+            this.articleService = articleService;
+            this.dashboardService = dashboardService;
         }
 
         public async Task<IActionResult> Index()
@@ -27,6 +26,12 @@ namespace Blog.Web.Areas.Admin.Controllers
             
 
             return View(articles);
+        }
+        [HttpGet]
+        public async Task<IActionResult> YearlyArticleCounts()
+        {
+            var count = await dashboardService.GetYearlyArticleCounts();
+            return Json(JsonConvert.SerializeObject(count));
         }
     }
 }

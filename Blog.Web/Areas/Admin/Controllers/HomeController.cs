@@ -33,5 +33,14 @@ namespace Blog.Web.Areas.Admin.Controllers
             var count = await dashboardService.GetYearlyArticleCounts();
             return Json(JsonConvert.SerializeObject(count));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> TotalArticleCount()
+        {
+            var count = await dashboardService.GetTotalArticleCounts();
+            return Json(count);
+        }
+
+
     }
 }

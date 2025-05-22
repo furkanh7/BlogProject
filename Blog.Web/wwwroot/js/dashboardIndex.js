@@ -2,7 +2,7 @@
 
 
 $(document).ready(function () {
-    var yearlyArticlesUrl = app.Urls.yearlyArticlesUrl;
+    var yearlyArticlesUrl = app.Urls.yearlyArticlesUrlll;
     var totalArticleCountUrl = app.Urls.totalArticleCountUrl;
     var totalCategoryCountUrl = app.Urls.totalCategoryCountUrl;
 

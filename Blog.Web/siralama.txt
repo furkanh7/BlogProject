@@ -739,7 +739,110 @@ UserController içerisindeki Profile Kısmı UserService'e taşındı.
 
 
 
-*********************************************************************************************************************** 37 /
+*********************************************************************************************************************** 37 //
+
+Admin arayüzündeki istatistiklerin gösterileceği bir yapı oluşturuldu.
+DashboardService sınıfı oluşturuldu ve IDashboardService interface'i implement edildi.
+IDashboardService interface'i, dashboard için gerekli olan metotları tanımlar.
+DashboardService sınıfı, dashboard için gerekli olan metotları içerir.
+dashboardIndex.js  dosyası js klasörü içerisine eklendi ve gerekli değişiklikler yapıldı.
+HomeController içerisinde gerekli değişikler yapıldı
+HomeController Index'i içerisine gerekli değişiklikler yapıldı ve script kısmı eklendi.
+
+
+
+
+
+
+
+
+
+*********************************************************************************************************************** 38 //
+bir önceki derste makale kısmının istatikleri eklenmişti 
+şimdi hem toplam makale ve kategori sayısının toplamlarını Dashboard'da listeledik 
+
+
+*********************************************************************************************************************** 39 //
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*********************************************************************************************************************** 40 //
+
+
+
+
+
+
+
+
+
+
+
+*********************************************************************************************************************** 41 //
+
+
+
+
+
+
+
+
+
+
+
+
+*********************************************************************************************************************** 42 //
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*********************************************************************************************************************** 43 //
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
 
 
